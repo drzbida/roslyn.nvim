@@ -14,6 +14,9 @@ local subcommand_tbl = {
         impl = function()
             local client = vim.lsp.get_clients({ name = "roslyn" })[1]
             if not client then
+                for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+                    vim.api.nvim_exec_autocmds("FileType", { group = "Roslyn", buffer = buf })
+                end
                 return
             end
 

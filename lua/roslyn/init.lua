@@ -120,6 +120,7 @@ function M.setup(config)
     vim.treesitter.language.register("c_sharp", "csharp")
 
     local cmd = vim.list_extend(vim.deepcopy(roslyn_config.exe), vim.deepcopy(roslyn_config.args))
+    commands.create_roslyn_commands()
 
     vim.api.nvim_create_autocmd({ "FileType" }, {
         group = vim.api.nvim_create_augroup("Roslyn", { clear = true }),
@@ -135,7 +136,6 @@ function M.setup(config)
                 return lsp_start(opt.buf, cmd, sln_dir, roslyn_config, on_init_sln)
             end
 
-            commands.create_roslyn_commands()
             commands.attach_subcommand_to_buffer("target", opt.buf, {
                 impl = function()
                     local root = vim.b.roslyn_root or utils.root(opt.buf, roslyn_config.broad_search)
